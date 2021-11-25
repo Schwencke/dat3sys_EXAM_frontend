@@ -1,50 +1,22 @@
-import React, { useState,useEffect } from "react"
-import Facade from "./apiFacade";
-import { BrowserRouter as Router, Switch, Route,} from "react-router-dom";
-import Company from "./Components/Company"
-import Header from "./Components/Header"
-import Home from "./Components/Home"
-import Products from "./Components/Products"
-import './App.css'
+
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Container} from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css'
- 
+import Home from "./componentes/Home";
+
+
+
+
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false)
- 
-  const logout = () => { Facade.logout()
-    setLoggedIn(false)} 
 
-  const login = (user, pass) => {
-
-    Facade.login(user,pass)
- .then(res =>setLoggedIn(true));
-  } 
- 
   return (
     <Container>
-      <Router>
-        <Header facade={Facade} loggedIn={loggedIn}/>
-        <Switch>
+      <Router>      
           <Route exact path="/">
-          <Home loggedIn={loggedIn} login={login} facade={Facade} logout={logout}
-          />
+          <Home/>
           </Route>
-          <Route exact path="/Company">
-            {Facade.hasUserAccess('user', loggedIn) &&
-          <Company facade={Facade} // props for company
-          />}
-          </Route>
-          <Route exact path="/Products">
-            {Facade.hasUserAccess('admin', loggedIn) &&
-          <Products facade={Facade} // props for company
-          />}
-          </Route>
-      
-        </Switch>
         </Router>
     </Container>
   )
- 
+
 }
 export default App;
