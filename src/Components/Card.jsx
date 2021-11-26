@@ -1,8 +1,6 @@
-
-
-const Card = ({image}) => {
+const Card = ({ image }) => {
     return (
-        <img src={image}/>
+        <img src={image} alt={''} />
     )
 }
 
