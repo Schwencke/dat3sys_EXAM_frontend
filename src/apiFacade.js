@@ -20,7 +20,6 @@ function apiFacade() {
     var opts = {
       method: method,
       headers: {
-        "User-Agent": "client",
         "Content-type": "application/json",
         'Accept': 'application/json',
       }
@@ -28,12 +27,11 @@ function apiFacade() {
     return opts;
   }
 
-
-
   return {
     makeOptions,
     fetchData
   }
 }
+
 const facade = apiFacade();
 export default facade;
