@@ -1,32 +1,24 @@
 import URL from './settings';
 
-function handleHttpErrors(res) {
- if (!res.ok) {
-   return Promise.reject({ status: res.status, fullError: res.json() })
- }
- return res.json();
-}
+
 
 function apiFacade() {
 
-const fetchData = (endpoint, updateAction) =>
-    {
-        const options = makeOptions("GET"); 
-        return fetch(URL + "/api/" + endpoint, options)
-            .then(handleHttpErrors)
-            .then((data) => updateAction(data))
-    }
+  const fetchData = (endpoint, updateAction) =>
+  {
+      const options = makeOptions("GET");
+      return fetch(URL + "/api/" + endpoint, options)
+          .then((data) => updateAction(data))
+  }
 
-const makeOptions= (method,body) =>{
+const makeOptions= (method) =>{
    var opts = {
      method: method,
      headers: {
+       "User-Agent" : "client",
        "Content-type": "application/json",
        'Accept': 'application/json',
      }
-   }
-   if (body) {
-     opts.body = JSON.stringify(body);
    }
    return opts;
  }

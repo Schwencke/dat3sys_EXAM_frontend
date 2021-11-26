@@ -1,13 +1,13 @@
 import React from 'react'
 import "../App.css"
-import Test from './Test';
+import Game from './Game';
 
 const Home = ({facade}) => {
     return (
       <div className="containerdiv">
 
       <div>
-          <Test Facade={facade}/>
+          <Game Facade={facade}/>
       </div>
       <hr/>
       <div className="backgroundC">
