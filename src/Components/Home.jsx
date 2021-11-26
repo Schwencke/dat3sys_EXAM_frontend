@@ -1,17 +1,22 @@
 import React from 'react'
-import LoggedIn from "../LoggedIn";
-import LogIn from "../Login";
+import "../App.css"
+import Test from './Test';
 
-const Home = ({loggedIn, login, facade, logout}) => {
+const Home = ({facade}) => {
     return (
-        <div>
-      {!loggedIn ? (<LogIn login={login}/>):
-        (<div>
-          
-          <button onClick={logout}>Logout</button>
-          <p>Role: {facade.getUserRoles()}</p>
-        </div>)}
-        </div>
+      <div className="containerdiv">
+
+      <div>
+          <Test Facade={facade}/>
+      </div>
+      <hr/>
+      <div className="backgroundC">
+          <form>
+              <button className="btns">Over</button>
+              <button className="btns">Under</button>
+          </form>
+          </div>
+  </div>
     )
 }
 
