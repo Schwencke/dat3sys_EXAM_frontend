@@ -4,23 +4,23 @@ class startScreen extends Component {
     constructor() {
         super();
         this.state = {
-            cards: [],
+            card: "",
         };
     }
 
     componentDidMount() {
-        fetch('https://deckofcardsapi.com/api/deck/new/draw/?count=1')
+        fetch('http://localhost:8080/CA3/api/card')
             .then(data => data.json())
-            .then(data => this.setState({ cards: data }, () => console.log(data)));
+            .then(data => this.setState({ card: data }, () => console.log(data)));
     }
 
     render() {
-        const data = this.state.cards;
+        const data = this.state.card;
         return (
             <div className="main-content container" style={{margin:"30px",alignItems:"center",backgroundColor:"bisque"}}>
-        {(data && data.cards) &&
+        {(data && data.card) &&
             <div>
-            <img src={data.cards[0].image} alt="image"></img>
+            <img src={data.image} alt="image"></img>
             </div>
         }    
         </div>

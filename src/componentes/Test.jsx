@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react'
 
 export default function Test({Facade}){
 
-const [list, setlist] = useState({cards:[]})
+const [list, setlist] = useState({})
 const updateList = (data) => {
     setlist({
     cards: data,
@@ -10,15 +10,16 @@ const updateList = (data) => {
 };
 
 useEffect(()=> {
-    Facade.fetchData('deck/new/draw/?count=1', updateList);
+    Facade.fetchData('card', updateList);
 },[Facade]);
+
 
 
     return(
         <div className="main-content container" style={{margin:"30px",alignItems:"center",backgroundColor:"burlywood"}}>
-        {(list.cards && list.cards.cards) &&
+        {(list.cards && list) &&
             <div>
-            <img src={list.cards.cards[0].image} alt="image"></img>
+            <img src={list.image} alt="image"></img>
             </div>
         }    
         </div>
