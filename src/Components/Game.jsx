@@ -1,46 +1,61 @@
 import Button from "./Button"
 import Card from "./Card"
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useReducer } from 'react'
+
+
+function reducer(state, action){
+    switch (action.type){
+        case 'new_deck':
+       return {deck_id: action.payload.deck_id, remaining: action.payload.remaining, value: action.payload.value, image: action.payload.image}
+        case 'new_card':
+        return {deck_id: action.payload.deck_id, remaining: action.payload.remaining, value: action.payload.value, image: action.payload.image}
+        case 'shuffle':
+            return{deck_id: state.deck_id, remaining: action.payload.remaining, value: state.value, image: state.image}
+        default: return state
+    }
+}
 
 export default function Game({ facade }) {
+    const [state, dispatch] = useReducer(reducer, {deck_id: '', remaining: '', value: '', image: ''})
+    const [score, setScore] = useState(0)
 
-    const [card, setCard] = useState({ value: '', image: '' })
-    const [deck, setDeck] = useState({ deck_id: '', remaining: '' })
-
-    const updateCard = (data) => {
-        console.log('NEW CARD', data)
-        setCard(data)
+    const newDeck = () => {
+        facade.fetchData('card').then(data => {
+            dispatch({type:'new_deck',payload: data})
+            console.log("fetch new deck")
+        })
+    }
+    const newCard = () => {
+        if (state.remaining === '0'){
+          shuffleDeck()
+        }else{
+            setScore(score + 1)
+        facade.fetchData(`card/draw/${state.deck_id}`).then(data => {
+            dispatch({type:'new_card',payload: data})
+            console.log("fetch new card")
+        })}
     }
 
-    const updateDeck = (data) => {
-        console.log('NEW DECK', data)
-        setDeck({ deck_id: data.deck_id, remaining: data.remaining })
-    }
-
-    const update = () => {
-        if (deck.deck_id !== '') {
-            facade.fetchData(`card/draw/${deck.deck_id}`, updateCard)
-        }
+    const shuffleDeck = () => {
+        facade.fetchData(`card/shuffle/${state.deck_id}`).then(data => {
+            dispatch({type:'shuffle', payload: data})
+            console.log("shuffleing current deck")
+        })
+            
     }
 
     useEffect(() => {
-        if (deck.deck_id === '') {
-            facade.fetchData('card', updateDeck);
-        }
-    }, [facade, deck.deck_id])
+        newDeck()
+    }, [])
 
     return (
         <div>
-            <Card src={card.image} />
-            <Button text={'Over'} onClick={update} />
-            <Button text={'Under'} onClick={update} />
+            <p>Score: {score}</p>
+            <p>Deck ID: {state.deck_id} <br /> Remaining in stack: {state.remaining}</p>
+            <Card image={state.image} />
+            <Button text={'Over'} onClick={newCard} />
+            <Button text={'Under'} onClick={newCard}/>
+            <Button text={'GET ME A NEW DECK NOW'} onClick={newDeck}/>
         </div>
-        // <div className="main-content container" style={{margin:"30px",alignItems:"center",backgroundColor:"burlywood"}}>
-        // {(list.cards && list.cards.cards) &&
-        //     <div>
-        //     <img src={list.cards.cards[0].image}></img>
-        //     </div>
-        // }    
-        // </div>
     )
 }
