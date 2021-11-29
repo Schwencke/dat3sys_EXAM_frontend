@@ -1,39 +1,27 @@
-import React from 'react';
-import Test from './Test';
+import React,{useState,useEffect} from 'react';
+import Game from './Game';
+import facade from '../apiFacade';
+import Button from './Button';
 
 
 
-export default function Home(Facade){
+export default function Home(){
+    const [newcard,setNewCard]= useState({newcard:{},newimage:"",newvalue:""})
+   
+   
+
+
     return(
 
     <div style={{textAlign:"center"}}>
 
         <div>
-            <Test Facade={Facade}/>
+            <Game facade={facade}/>
+            <Button/>
         </div>
-        <hr/>
+       
         <div style={{backgroundColor:"cyan"}}>
-            <form>
-                <button style={{backgroundColor:"#4CAF50",
-border: "none",
-  color: "white",
-  padding: "15px 32px",
-  textAlign: "center",
-  TextDecoder: "none",
-  display: "inline-block",
-  fontSize: "16px",
-  margin:"30px",
-  }} >Over</button>
-                <button style={{backgroundColor:"#4CAF50",
-            border: "none",
-            color: "white",
-            padding: "15px 32px",
-            textAlign: "center",
-            TextDecoder: "none",
-            display: "inline-block",
-            fontSize: "16px",
-            }} >Under</button>
-            </form>
+           
             </div>
     </div>
 
