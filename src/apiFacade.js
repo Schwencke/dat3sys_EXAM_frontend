@@ -1,55 +1,47 @@
-const URL="http://localhost:8080/CA3";
 
-function handleHttpErrors(res)
-{
-    if (!res.ok)
-    {
-        return Promise.reject({ status: res.status, fullError: res.json() })
-    }
-    return res.json();
+import URL from './settings';
+
+function handleHttpErrors(res) {
+  if (!res.ok) {
+    return Promise.reject({status: res.status, fullError: res.json() })
+    //fejlhåndtering er ikke ordentligt implementeret :/
+  }
+  return res.json();
 }
 
-let apiFacade = () =>
-{
+function apiFacade() {
 
-    const fetchData = (endpoint, updateAction, SetErrorMessage) =>
-    {
-        const options = makeOptions("GET");
-        return fetch(URL + "/api/" + endpoint, options)
-            .then(handleHttpErrors)
-            .then((data) => updateAction(data))
-            .catch(err =>
-            {
-                if (err.status)
-                {
-                    console.log(err)
-                    err.fullError.then(e => SetErrorMessage(e.code + ": " + e.message))
-                }
-                else { SetErrorMessage("Network error"); }
-            })
+  // const fetchData = (endpoint, updateAction) => {
+  //   const options = makeOptions("GET");
+  //   return fetch(URL + "/api/" + endpoint, options)
+  //     .then(handleHttpErrors)
+  //     .then((data) => updateAction(data))
+  // }
+
+  const fetchData = (endpoint) => {
+    const options = makeOptions("GET");
+     return fetch(URL + "/api/" + endpoint, options)
+      .then(handleHttpErrors)
+      //.then((res) => res.json()) // data retuneres af fejlhåndteringen
     }
 
-    const makeOptions = (method) =>
-    {
-        var opts = {
-            method: method,
-            headers: {
-                "Content-type": "application/json",
-                'Accept': 'application/json',
-            }
-        }
-        
-        return opts;
-    }
 
-    return {
-        makeOptions,
-        fetchData,
-        
+  const makeOptions = (method) => {
+    var opts = {
+      method: method,
+      headers: {
+        "Content-type": "application/json",
+        'Accept': 'application/json',
+      }
     }
+    return opts;
+  }
 
+  return {
+    makeOptions,
+    fetchData
+  }
 }
 
-const facade = apiFacade()
-
-export default facade
+const facade = apiFacade();
+export default facade;

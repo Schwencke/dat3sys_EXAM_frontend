@@ -1,22 +1,25 @@
 
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { Container} from 'react-bootstrap';
-import Home from "./componentes/Home";
-
-
-
+import Facade from "./apiFacade";
+import { BrowserRouter as Router, Switch, Route, } from "react-router-dom";
+import Game from "./Components/Game";
+import './App.css'
+import { Container } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 function App() {
 
   return (
     <Container>
-      <Router>      
+      <Router>
+        <Switch>
           <Route exact path="/">
-          <Home/>
+            <Game facade={Facade} />
           </Route>
-        </Router>
+        </Switch>
+      </Router>
     </Container>
   )
 
 }
+
 export default App;
