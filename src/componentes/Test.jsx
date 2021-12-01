@@ -35,8 +35,8 @@ function reducer(state, action) {
 export default function Test({ facade }) {
 
   const [count, setCount] = useState(3);
-  const [disable, setDisable] = useState(false);
-  
+  const [disable, setDisable] = useState(true);
+
   // useReducer er som pandant til useState brugt til at kontrollere en mere complex state
   const [state, dispatch] = useReducer(reducer, {
     deck_id: "",
@@ -53,24 +53,25 @@ export default function Test({ facade }) {
     });
   };
   const newCard = () => {
-    if (state.remaining === "0") 
-    {
+    if (state.remaining === "0") {
       shuffleDeck();
     }
-    else  {
+    else {
       setScore(score + 1);
       facade.fetchData(`card/draw/${state.deck_id}`).then((data) => {
-      dispatch({ type: "new_card", payload: data });
-      if (count > 0){
-      setCount(count-1)
+        dispatch({ type: "new_card", payload: data });
+        if (count > 0) {
+          setCount(count - 1)
+        }
+
+        if (count === 1) {
+          setDisable("")
+        }
+        console.log("fetch new card");
       }
-      if (count === 0){
-        setDisable({disable:false})
-       }
-      console.log("fetch new card");
-      });
+      )
     }
-    
+
   };
 
   const shuffleDeck = () => {
@@ -80,14 +81,17 @@ export default function Test({ facade }) {
     });
   };
 
- 
+  const pass = () => {
+    if (count === 0) {
+      setCount(3)
+      setDisable(true)
+    }
+  }
 
-  
-  
   useEffect(() => {
     newDeck();
   }, []);
-  
+
   return (
     <div>
       <p>Score: {score}</p>
@@ -96,11 +100,12 @@ export default function Test({ facade }) {
       </p>
       <Card image={state.image} />
       <p>You had choised {count} times</p>
-      <hr/>
-      <Button  text={"Over"}  onClick={newCard} />
-      <Button  text={"Under"}  onClick={newCard} />
+      <hr />
+      <Button text={"Over"} onClick={newCard} />
+      <Button text={"Under"} onClick={newCard} />
       <Button text={"New Deck"} onClick={newDeck} />
-      <Button disabled onClick={() => {setCount(3)}} text="Pass"/>       
+      {/* <Button disabled={disable} onClick={() => { setCount(3) }} text="Pass" /> */}
+      <Button disable={disable} onClick={pass} text="Pass" />
     </div>
   );
 }
