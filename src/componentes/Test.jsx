@@ -2,6 +2,8 @@ import Button from "./Button";
 import Card from "./Card";
 import React, { useState, useEffect, useReducer } from "react";
 
+
+
 function reducer(state, action) {
   switch (action.type) {
     case "new_deck":
@@ -30,7 +32,11 @@ function reducer(state, action) {
   }
 }
 
-export default function Game({ facade }) {
+export default function Test({ facade }) {
+
+  const [count, setCount] = useState(3);
+  const [disable, setDisable] = useState(false);
+  
   // useReducer er som pandant til useState brugt til at kontrollere en mere complex state
   const [state, dispatch] = useReducer(reducer, {
     deck_id: "",
@@ -41,8 +47,8 @@ export default function Game({ facade }) {
   const [score, setScore] = useState(0);
 
   const newDeck = () => {
-    facade.fetchData("card").then((data) => {
-      dispatch({ type: "new_deck", payload: data });
+    facade.fetchData("card").then((data1) => {
+      dispatch({ type: "new_deck", payload: data1 });
       console.log("fetch new deck");
     });
   };
@@ -50,13 +56,21 @@ export default function Game({ facade }) {
     if (state.remaining === "0") 
     {
       shuffleDeck();
-    }else {
+    }
+    else  {
       setScore(score + 1);
       facade.fetchData(`card/draw/${state.deck_id}`).then((data) => {
-        dispatch({ type: "new_card", payload: data });
-        console.log("fetch new card");
+      dispatch({ type: "new_card", payload: data });
+      if (count > 0){
+      setCount(count-1)
+      }
+      if (count === 0){
+        setDisable({disable:false})
+       }
+      console.log("fetch new card");
       });
     }
+    
   };
 
   const shuffleDeck = () => {
@@ -66,6 +80,10 @@ export default function Game({ facade }) {
     });
   };
 
+ 
+
+  
+  
   useEffect(() => {
     newDeck();
   }, []);
@@ -77,9 +95,12 @@ export default function Game({ facade }) {
         Deck ID: {state.deck_id} <br /> Remaining in stack: {state.remaining}
       </p>
       <Card image={state.image} />
-      <Button text={"Over"} onClick={newCard} />
-      <Button text={"Under"} onClick={newCard} />
+      <p>You had choised {count} times</p>
+      <hr/>
+      <Button  text={"Over"}  onClick={newCard} />
+      <Button  text={"Under"}  onClick={newCard} />
       <Button text={"New Deck"} onClick={newDeck} />
+      <Button disabled onClick={() => {setCount(3)}} text="Pass"/>       
     </div>
   );
 }
