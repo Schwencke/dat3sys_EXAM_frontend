@@ -1,54 +1,18 @@
 import { useState, useEffect } from "react"
 
-const Score = ({currentCard, prevCard, selected, toggle}) => {
-
-
-
-        const winOrLoose = () => {
-            if (prevCard != undefined){
-        switch (selected) {
-          case "over":
-            // if (currentCard === prevCard){
-            //  // console.log( currentCard + "==" + prevCard +"from over")
-            //   return setScore(score +1);
-            // }
-            if (currentCard >= prevCard) {
-           //   console.log( currentCard + "<" + prevCard)
-              return setScore(score +1);
-            }
-            if (currentCard < prevCard) {
-            //  console.log( currentCard + ">" + prevCard)
-            console.log("you lost")
-            return;
-            }
-          case "under":
-            // if (currentCard === prevCard){
-            // //  console.log( currentCard + "==" + prevCard + "from under")
-            //   return setScore(score +1);
-            // }
-            if (currentCard <= prevCard) {
-            //  console.log( currentCard + ">" + prevCard)
-              return setScore(score +1);
-            }
-            if (currentCard > prevCard) {
-             // console.log( currentCard + "<" + prevCard)
-             console.log("you lost")
-             return;
-            }
-          case 'first':
-              return;
-          default:
-              console.log("default")
-            return true;
-      }
-    }}
+const Score = ({win, firstGame, toggle}) => {
 
     const [score, setScore] = useState(0)
 
+    const incrementScore = () => {
+      setScore(score +1)
+    }
+
     useEffect(() => {
-       // console.log(currentCard, prevCard, selected)
-        winOrLoose(currentCard, prevCard, selected)
-    }, [toggle])
+      if (!firstGame){
+     if (win === true) return incrementScore()
+     if (win === false) return setScore ("You lost!: " + score)
+    }}, [win,toggle])
 
     return (
         <p>The Score is: {score}</p>

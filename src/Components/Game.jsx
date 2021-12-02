@@ -1,69 +1,86 @@
 import Button from "./Button";
 import Card from "./Card";
 import React, { useState, useEffect, useReducer } from "react";
+import Score from "./Score";
 
-const winOrLoose = (state) => {
-      if (state !=undefined){
-  switch (state.selected_type) {
+const winOrLoose = (value1, prev1, selec) => {
+ 
+  let value = value1
+
+ let prev = prev1
+ 
+  if (value1 === 'JACK'){
+    value = 11
+ }
+ if (prev1 === 'JACK'){
+  prev = 11
+}
+if (value1 === 'QUEEN'){
+  value = 12
+}
+if (prev1 === 'QUEEN'){
+prev = 12
+}
+if (value1 === 'KING'){
+  value = 13
+}
+if (prev1 === 'KING'){
+prev = 13
+}
+if (prev1 === 'ACE' && selec === 'over'){
+  prev = 1
+  }
+  if (prev1 === 'ACE' && selec === 'under'){
+  prev = 1
+  }
+
+if (value1 === 'ACE' && selec === 'over' && prev>=1){
+  value = 14
+}
+if (value1 === 'ACE' && selec === 'under' && prev>=1){
+  value = 1
+}
+
+if (value1 === '10'){
+  value = 10
+}
+if (prev1 === '10'){
+prev = 10
+}
+ 
+  switch (selec) {
     case "over":
-      // if (currentCard === prevCard){
-      //  // console.log( currentCard + "==" + prevCard +"from over")
-      //   return setScore(score +1);
-      // }
-      if (state.value >= state.previous_card) {
-     //   console.log( currentCard + "<" + prevCard)
-        return console.log("win")
-      } else return console.log("you lost")
+      if (value >= prev) {
+        console.log(value + "vs" + prev + ">=" + "true")
+        return true
+      } else console.log(value + "vs" + prev + ">=" + "false")
+      return false 
     case "under":
-      // if (currentCard === prevCard){
-      // //  console.log( currentCard + "==" + prevCard + "from under")
-      //   return setScore(score +1);
-      // }
-      if (state.value <= state.previous_card) {
-      //  console.log( currentCard + ">" + prevCard)
-        return console.log("win")
-      }else return console.log("you lost" +(state.value) + (state.previous_card))
+      if (value <= prev) {
+        console.log(value + "vs" + prev + "<="  + "true")
+        return true
+      }else  console.log(value + "vs" + prev + "<=" + "false")
+       return false
     case 'first':
         return;
     default:
-        console.log("default")
+        console.log("default1")
       return true;
 }
-}}
+}
 
-const checkValue = (card, selectedType) => {
-  switch (card) {
-    case "ACE":
-      // if (selectedType === "over") {
-      //   return 14;
-      // }
-      // if (selectedType === "first") {
-      //   return 1;
-      // }
-      // if (selectedType === "under") {
-        return 1;
-      
-    case "JACK":
-      return 11;
-    case "QUEEN":
-      return 12;
-    case "KING":
-      return 13;
-    default:
-      return card;
-  }
-};
+
 
 function reducer(state, action) {
   switch (action.type) {
     case "new_deck":
       return {
         selected_type: "first",
-        previous_card: checkValue(action.payload.value, "first"),
+        previous_card: action.payload.value,
         deck_id: action.payload.deck_id,
         image: action.payload.image,
         remaining: action.payload.remaining,
-        value: checkValue(action.payload.value, "first"),
+        value: action.payload.value,
       };
     case "new_card":
       return {
@@ -72,9 +89,11 @@ function reducer(state, action) {
         deck_id: state.deck_id,
         image: action.payload.image,
         remaining: action.payload.remaining,
-        value: checkValue(action.payload.value, action.selec),
+        value: action.payload.value,
+        win: winOrLoose(action.payload.value, state.value, action.selected_type)
       };
   }
+  
 }
 
 export default function Game({ facade }) {
@@ -84,6 +103,7 @@ export default function Game({ facade }) {
     image: "0",
     remaining: "10",
     value: "0",
+    win: true
   });
   const [selectedType, setSelectedType] = useState();
   const [deck, setDeck] = useState({ deck_id: "", remaining: "", value: "" });
@@ -94,36 +114,6 @@ export default function Game({ facade }) {
   const [toggle, setToggle] = useState(true);
   const [outcome, SetOutCome] = useState("noes");
 
-  // const checkValue = (card) => {
-  //   switch (card) {
-  //     case "ACE":
-  //       if (
-  //         (selectedType === "over" && prevCard > 1)
-  //       ) {
-  //         return 14;
-  //       }
-  //       if  (selectedType === "under" && prevCard < 14)
-  //       {return 1;}
-  //     case "JACK":
-  //       return 11;
-  //     case "QUEEN":
-  //       return 12;
-  //     case "KING":
-  //       return 13;
-  //     default:
-  //       return card;
-  //   }
-  // };
-
-  // const newDeck = () => {
-  //   facade.fetchData("card").then((data) => {
-  //     dispatch({type: 'new_deck', payload: data})
-  //     // setDeck(data);
-  //     // setFirstCard(checkValue(data.value));
-  //     // setThisCard(checkValue(data.value));
-  //     // setPrevCard(checkValue(data.value));
-  //   });
-  // };
 
   const first = () => {
     newDeck();
@@ -135,58 +125,6 @@ export default function Game({ facade }) {
       setFirstGame(false);
     });
   };
-  // const newCard = () => {
-  //   if (state.remaining === "0") {
-  //     shuffleDeck();
-  //   } else {
-  //     facade.fetchData(`card/draw/${state.deck_id}`).then((data) => {
-  //       dispatch({ type: "new_card", payload: data });
-  //     });
-  //   }
-  // };
-
-  // const newCard = () => {
-  //   if (deck.remaining === "0") {
-  //     console.log("shuffle");
-  //   } else {
-  //     facade.fetchData(`card/draw/${deck.deck_id}`).then((data) => {
-  //       setDeck(data);
-  //       setPrevCard(checkValue(thisCard));
-  //       //if (checkValue(thisCard) < data.value) setScore(score +1)
-  //       setThisCard(checkValue(data.value));
-
-  //     });
-  //   }
-  // };
-  
-    const winOrLoose = () => {
-      
-  switch (selectedType) {
-    case "over":
-      // if (currentCard === prevCard){
-      //  // console.log( currentCard + "==" + prevCard +"from over")
-      //   return setScore(score +1);
-      // }
-      if (state.value >= state.previous_card) {
-     //   console.log( currentCard + "<" + prevCard)
-        return console.log("win")
-      } else return console.log("you lost")
-    case "under":
-      // if (currentCard === prevCard){
-      // //  console.log( currentCard + "==" + prevCard + "from under")
-      //   return setScore(score +1);
-      // }
-      if (state.value <= state.previous_card) {
-      //  console.log( currentCard + ">" + prevCard)
-        return console.log("win")
-      }else return console.log("you lost" +(state.value) + (state.previous_card))
-    case 'first':
-        return;
-    default:
-        console.log("default")
-      return true;
-}
-}
 
   const dothisover = () => {
     setSelectedType("over");
@@ -198,7 +136,6 @@ export default function Game({ facade }) {
   };
 
   useEffect(() => {
-   
     if (firstGame) {
       first();
     }
@@ -206,15 +143,14 @@ export default function Game({ facade }) {
       console.log("shuffle");
     } else {
       facade.fetchData(`card/draw/${state.deck_id}`).then((data) => {
-        winOrLoose(dispatch({ type: "new_card", selected_type: selectedType, payload: data }));
+        dispatch({ type: "new_card", selected_type: selectedType, payload: data });
       });
-      // dispatch({type: "win_loose"})
     }
   }, [toggle]);
 
   return (
     <div>
-      {/* <Score currentCard={thisCard} prevCard={prevCard} selected={selectedType} toggle={toggle}/> */}
+       <Score win={state.win} firstGame={firstGame} toggle={toggle}/>
 
       <p>
         Deck ID: {state.deck_id} <br /> Remaining in stack: {state.remaining}{" "}
@@ -222,6 +158,7 @@ export default function Game({ facade }) {
         This Card: {state.value} <br />
         Prev Card: {state.previous_card} <br />
         Selected : {state.selected_type} <br />
+        win: {state.win + " state"}
       </p>
 
       <Card image={state.image} />
