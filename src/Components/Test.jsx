@@ -34,7 +34,6 @@ function reducer(state, action) {
 
 export default function Test({ facade }) {
   let passTurns = 3
-
   const [count, setCount] = useState(passTurns);
   const [disable, setDisable] = useState(true);
   const [passText, setPassText] = useState("Pass on in " + (passTurns))

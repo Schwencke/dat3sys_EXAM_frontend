@@ -1,12 +1,12 @@
 
 import facade from "./apiFacade";
 import { BrowserRouter as Router, Switch, Route, } from "react-router-dom";
-import Home from './Components/Home'
 import './App.css'
 import { Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { StartScreen } from "./Components/StartScreen";
 import { LostScreen } from "./Components/LostScreen";
+import Game from "./Components/Game"
 
 function App() {
 
@@ -18,7 +18,7 @@ function App() {
             <StartScreen />
           </Route>
           <Route exact path="/game">
-            <Game facade={Facade} />
+            <Game facade={facade} />
           </Route>
           <Route exact path="/rules">
             {/* <Rules /> */}

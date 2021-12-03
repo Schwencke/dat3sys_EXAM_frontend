@@ -3,10 +3,9 @@ import Card from "./Card";
 import React, { useState, useEffect, useReducer } from "react";
 import Score from "./Score";
 
-const winOrLoose = (value1, prev1, selec) => {
+const winOrLose = (value1, prev1, selec) => {
  
-  let value = value1
-
+ let value = value1
  let prev = prev1
  
   if (value1 === 'JACK'){
@@ -51,22 +50,22 @@ prev = 10
   switch (selec) {
     case "over":
       if (value >= prev) {
-        console.log(value + "vs" + prev + ">=" + "true")
-        return true
-      } else console.log(value + "vs" + prev + ">=" + "false")
-      return false 
+        console.log(value + "vs" + prev + ">=" + "true");
+        return true;
+      } else console.log(value + "vs" + prev + ">=" + "false");
+      return false;
     case "under":
       if (value <= prev) {
-        console.log(value + "vs" + prev + "<="  + "true")
-        return true
-      }else  console.log(value + "vs" + prev + "<=" + "false")
-       return false
-    case 'first':
-        return;
+        console.log(value + "vs" + prev + "<=" + "true");
+        return true;
+      } else console.log(value + "vs" + prev + "<=" + "false");
+      return false;
+    case "first":
+      return;
     default:
-        console.log("default1")
+      console.log("default1");
       return true;
-}
+  }
 }
 
 
@@ -90,7 +89,7 @@ function reducer(state, action) {
         image: action.payload.image,
         remaining: action.payload.remaining,
         value: action.payload.value,
-        win: winOrLoose(action.payload.value, state.value, action.selected_type)
+        win: winOrLose(action.payload.value, state.value, action.selected_type)
       };
   }
   
@@ -106,14 +105,12 @@ export default function Game({ facade }) {
     win: true
   });
   const [selectedType, setSelectedType] = useState();
-  const [deck, setDeck] = useState({ deck_id: "", remaining: "", value: "" });
-  const [firstCard, setFirstCard] = useState(0);
-  const [thisCard, setThisCard] = useState(0);
-  const [prevCard, setPrevCard] = useState();
   const [firstGame, setFirstGame] = useState(true);
   const [toggle, setToggle] = useState(true);
-  const [outcome, SetOutCome] = useState("noes");
-
+  let passTurns = 3
+  const [count, setCount] = useState(passTurns);
+  const [disable, setDisable] = useState(true);
+  const [passText, setPassText] = useState("Pass on in " + (passTurns))
 
   const first = () => {
     newDeck();
@@ -144,9 +141,29 @@ export default function Game({ facade }) {
     } else {
       facade.fetchData(`card/draw/${state.deck_id}`).then((data) => {
         dispatch({ type: "new_card", selected_type: selectedType, payload: data });
+
+        if (count > 0) {
+          setCount(count - 1)
+          setPassText("Pass on in " + (count - 1))
+        }
+
+        if (count === 1) {
+          setDisable("")
+          setPassText("PASS TURN")
+        }
+
       });
     }
   }, [toggle]);
+
+
+  const pass = () => {
+    if (count === 0) {
+      setCount(3)
+      setDisable(true)
+      setPassText("Pass on in " + (passTurns))
+    }
+  }
 
   return (
     <div>
@@ -164,6 +181,7 @@ export default function Game({ facade }) {
       <Card image={state.image} />
       <Button text={"Over"} onClick={dothisover} />
       <Button text={"Under"} onClick={dothisunder} />
+      <Button disable={disable} onClick={pass} text={passText} />
     </div>
   );
 }
