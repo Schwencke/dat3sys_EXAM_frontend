@@ -4,49 +4,49 @@ import React, { useState, useEffect, useReducer } from "react";
 import Score from "./Score";
 
 const winOrLose = (value1, prev1, selec) => {
- 
- let value = value1
- let prev = prev1
- 
-  if (value1 === 'JACK'){
+
+  let value = value1
+  let prev = prev1
+
+  if (value1 === 'JACK') {
     value = 11
- }
- if (prev1 === 'JACK'){
-  prev = 11
-}
-if (value1 === 'QUEEN'){
-  value = 12
-}
-if (prev1 === 'QUEEN'){
-prev = 12
-}
-if (value1 === 'KING'){
-  value = 13
-}
-if (prev1 === 'KING'){
-prev = 13
-}
-if (prev1 === 'ACE' && selec === 'over'){
-  prev = 1
   }
-  if (prev1 === 'ACE' && selec === 'under'){
-  prev = 1
+  if (prev1 === 'JACK') {
+    prev = 11
+  }
+  if (value1 === 'QUEEN') {
+    value = 12
+  }
+  if (prev1 === 'QUEEN') {
+    prev = 12
+  }
+  if (value1 === 'KING') {
+    value = 13
+  }
+  if (prev1 === 'KING') {
+    prev = 13
+  }
+  if (prev1 === 'ACE' && selec === 'over') {
+    prev = 1
+  }
+  if (prev1 === 'ACE' && selec === 'under') {
+    prev = 1
   }
 
-if (value1 === 'ACE' && selec === 'over' && prev>=1){
-  value = 14
-}
-if (value1 === 'ACE' && selec === 'under' && prev>=1){
-  value = 1
-}
+  if (value1 === 'ACE' && selec === 'over' && prev >= 1) {
+    value = 14
+  }
+  if (value1 === 'ACE' && selec === 'under' && prev >= 1) {
+    value = 1
+  }
 
-if (value1 === '10'){
-  value = 10
-}
-if (prev1 === '10'){
-prev = 10
-}
- 
+  if (value1 === '10') {
+    value = 10
+  }
+  if (prev1 === '10') {
+    prev = 10
+  }
+
   switch (selec) {
     case "over":
       if (value >= prev) {
@@ -91,8 +91,9 @@ function reducer(state, action) {
         value: action.payload.value,
         win: winOrLose(action.payload.value, state.value, action.selected_type)
       };
+    default: return
   }
-  
+
 }
 
 export default function Game({ facade }) {
@@ -167,7 +168,7 @@ export default function Game({ facade }) {
 
   return (
     <div>
-       <Score win={state.win} firstGame={firstGame} toggle={toggle}/>
+      <Score win={state.win} firstGame={firstGame} toggle={toggle} />
 
       <p>
         Deck ID: {state.deck_id} <br /> Remaining in stack: {state.remaining}{" "}
