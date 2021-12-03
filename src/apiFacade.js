@@ -17,10 +17,10 @@ function apiFacade() {
   //     .then((data) => updateAction(data))
   // }
 
-  const fetchData = (endpoint) => {
+  const fetchData = async (endpoint) => {
     const options = makeOptions("GET");
-     return fetch(URL + "/api/" + endpoint, options)
-      .then(handleHttpErrors)
+     const res = await fetch(URL + "/api/" + endpoint, options);
+    return await handleHttpErrors(res);
       //.then((res) => res.json()) // data retuneres af fejlhåndteringen
     }
 
