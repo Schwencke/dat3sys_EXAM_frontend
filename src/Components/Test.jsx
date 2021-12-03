@@ -2,6 +2,8 @@ import Button from "./Button";
 import Card from "./Card";
 import React, { useState, useEffect, useReducer } from "react";
 
+
+
 function reducer(state, action) {
   switch (action.type) {
     case "new_deck":
@@ -30,7 +32,13 @@ function reducer(state, action) {
   }
 }
 
-export default function Game({ facade }) {
+export default function Test({ facade }) {
+  let passTurns = 3
+
+  const [count, setCount] = useState(passTurns);
+  const [disable, setDisable] = useState(true);
+  const [passText, setPassText] = useState("Pass on in " + (passTurns))
+
   // useReducer er som pandant til useState brugt til at kontrollere en mere complex state
   const [state, dispatch] = useReducer(reducer, {
     deck_id: "",
@@ -41,21 +49,33 @@ export default function Game({ facade }) {
   const [score, setScore] = useState(0);
 
   const newDeck = () => {
-    facade.fetchData("card").then((data) => {
-      dispatch({ type: "new_deck", payload: data });
+    facade.fetchData("card").then((data1) => {
+      dispatch({ type: "new_deck", payload: data1 });
       console.log("fetch new deck");
     });
   };
   const newCard = () => {
     if (state.remaining === "0") {
       shuffleDeck();
-    } else {
+    }
+    else {
       setScore(score + 1);
       facade.fetchData(`card/draw/${state.deck_id}`).then((data) => {
         dispatch({ type: "new_card", payload: data });
+        if (count > 0) {
+          setCount(count - 1)
+          setPassText("Pass on in " + (count - 1))
+        }
+
+        if (count === 1) {
+          setDisable("")
+          setPassText("PASS TURN")
+        }
         console.log("fetch new card");
-      });
+      }
+      )
     }
+
   };
 
   const shuffleDeck = () => {
@@ -64,6 +84,14 @@ export default function Game({ facade }) {
       console.log("shuffleing current deck");
     });
   };
+
+  const pass = () => {
+    if (count === 0) {
+      setCount(3)
+      setDisable(true)
+      setPassText("Pass on in " + (passTurns))
+    }
+  }
 
   useEffect(() => {
     newDeck();
@@ -76,10 +104,13 @@ export default function Game({ facade }) {
         Deck ID: {state.deck_id} <br /> Remaining in stack: {state.remaining}
       </p>
       <Card image={state.image} />
+      {/* <p>You had choised {count} times</p> */}
+      <hr />
       <Button text={"Over"} onClick={newCard} />
       <Button text={"Under"} onClick={newCard} />
       <Button text={"New Deck"} onClick={newDeck} />
+      {/* <Button disabled={disable} onClick={() => { setCount(3) }} text="Pass" /> */}
+      <Button disable={disable} onClick={pass} text={passText} />
     </div>
   );
 }
-

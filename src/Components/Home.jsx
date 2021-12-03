@@ -1,23 +1,16 @@
-import React from 'react'
-import "../App.css"
+import React from 'react';
 import Game from './Game';
+import Test from './Test'
+import facade from '../apiFacade';
+import Button from './Button';
 
-const Home = ({ facade }) => {
-    return (
-        <div className="containerdiv">
 
-            <div>
-                <Game Facade={facade} />
-            </div>
-            <hr />
-            <div className="backgroundC">
-                <form>
-                    <button className="btns">Over</button>
-                    <button className="btns">Under</button>
-                </form>
-            </div>
-        </div>
+export default function Home(){
+    return(
+
+    <div style={{textAlign:"center"}}>
+            <Test facade={facade}/>
+    </div>
+
     )
-}
-
-export default Home
+};
