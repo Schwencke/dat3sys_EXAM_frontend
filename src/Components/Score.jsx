@@ -10,8 +10,8 @@ const Score = ({win, firstGame, toggle}) => {
 
     useEffect(() => {
       if (!firstGame){
-     if (win === true) return incrementScore()
-     if (win === false) return setScore ("You lost!: " + score)
+    if (win === true) return incrementScore()
+    if (win === false) return setScore ("You lost!: " + score)
     }}, [win,toggle])
 
     return (
