@@ -91,6 +91,7 @@ function reducer(state, action) {
         value: action.payload.value,
         win: winOrLose(action.payload.value, state.value, action.selected_type)
       };
+    default: return
   }
 
 }
