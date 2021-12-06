@@ -5,7 +5,7 @@ import './App.css'
 import { Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { StartScreen } from "./Components/StartScreen";
-import { LostScreen } from "./Components/LostScreen";
+import { LoseScreen } from "./Components/LoseScreen";
 import Game from "./Components/Game"
 
 function App() {
@@ -23,8 +23,8 @@ function App() {
           <Route exact path="/rules">
             {/* <Rules /> */}
           </Route>
-          <Route exact path="/lost">
-            <LostScreen />
+          <Route exact path="/lose">
+            <LoseScreen />
           </Route>
         </Switch>
       </Router>

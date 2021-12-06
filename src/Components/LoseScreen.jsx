@@ -1,7 +1,7 @@
 import { useHistory } from "react-router-dom"
 import Button from "./Button"
 
-export const LostScreen = () => {
+export const LoseScreen = () => {
     let history = useHistory()
 
     const restart = () => {
