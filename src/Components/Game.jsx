@@ -68,8 +68,6 @@ const winOrLose = (value1, prev1, selec) => {
   }
 }
 
-
-
 function reducer(state, action) {
   switch (action.type) {
     case "new_deck":
@@ -93,7 +91,6 @@ function reducer(state, action) {
       };
     default: return
   }
-
 }
 
 export default function Game({ facade }) {
@@ -152,11 +149,9 @@ export default function Game({ facade }) {
           setDisable("")
           setPassText("PASS TURN")
         }
-
       });
     }
   }, [toggle]);
-
 
   const pass = () => {
     if (count === 0) {

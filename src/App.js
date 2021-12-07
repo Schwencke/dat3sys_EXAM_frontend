@@ -8,7 +8,7 @@ import { StartScreen } from "./Components/StartScreen";
 import { LoseScreen } from "./Components/LoseScreen";
 import Game from "./Components/Game"
 
-function App() {
+function App({ score }) {
 
   return (
     <Container>
@@ -24,7 +24,7 @@ function App() {
             {/* <Rules /> */}
           </Route>
           <Route exact path="/lose">
-            <LoseScreen />
+            <LoseScreen score={score} />
           </Route>
         </Switch>
       </Router>

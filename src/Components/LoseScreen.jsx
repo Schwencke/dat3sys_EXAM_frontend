@@ -1,7 +1,7 @@
 import { useHistory } from "react-router-dom"
 import Button from "./Button"
 
-export const LoseScreen = () => {
+export const LoseScreen = ({ score }) => {
     let history = useHistory()
 
     const restart = () => {
@@ -10,7 +10,7 @@ export const LoseScreen = () => {
 
     return (
         <div>
-            <h1>Score X</h1>
+            <h1>{score}</h1>
             <Button text={"Restart"} onClick={restart} /><br />
         </div>
     )
