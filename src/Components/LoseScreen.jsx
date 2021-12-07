@@ -10,7 +10,7 @@ export const LoseScreen = ({ score }) => {
 
     return (
         <div>
-            <h1>{score}</h1>
+            <h1>You won! Now drink {score} beers...</h1>
             <Button text={"Restart"} onClick={restart} /><br />
         </div>
     )

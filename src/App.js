@@ -1,4 +1,3 @@
-
 import facade from "./apiFacade";
 import { BrowserRouter as Router, Switch, Route, } from "react-router-dom";
 import './App.css'
@@ -7,8 +6,11 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { StartScreen } from "./Components/StartScreen";
 import { LoseScreen } from "./Components/LoseScreen";
 import Game from "./Components/Game"
+import { useState } from "react";
 
-function App({ score }) {
+function App() {
+
+  const [score, setScore] = useState(1)
 
   return (
     <Container>
@@ -18,7 +20,7 @@ function App({ score }) {
             <StartScreen />
           </Route>
           <Route exact path="/game">
-            <Game facade={facade} />
+            <Game facade={facade} score={score} setScore={setScore} />
           </Route>
           <Route exact path="/rules">
             {/* <Rules /> */}

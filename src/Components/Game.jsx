@@ -93,7 +93,7 @@ function reducer(state, action) {
   }
 }
 
-export default function Game({ facade }) {
+export default function Game({ facade, score, setScore }) {
   const [state, dispatch] = useReducer(reducer, {
     selected_type: "first",
     deck_id: "0",
@@ -163,7 +163,7 @@ export default function Game({ facade }) {
 
   return (
     <div>
-      <Score win={state.win} firstGame={firstGame} toggle={toggle} />
+      <Score win={state.win} firstGame={firstGame} toggle={toggle} score={score} setScore={setScore} />
 
       <p>
         Deck ID: {state.deck_id} <br /> Remaining in stack: {state.remaining}{" "}
