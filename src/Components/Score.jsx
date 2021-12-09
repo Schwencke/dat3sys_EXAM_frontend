@@ -8,8 +8,6 @@ const Score = ({ win, firstGame, toggle, score, setScore }) => {
     history.push("/lose")
   }
 
-
-
   const incrementScore = () => {
     setScore(score + 1)
   }

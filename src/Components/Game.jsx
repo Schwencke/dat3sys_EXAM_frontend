@@ -111,6 +111,7 @@ export default function Game({ facade, score, setScore }) {
   const [passText, setPassText] = useState("Pass on in " + (passTurns))
 
   const first = () => {
+    setScore(1)
     newDeck();
   };
 
