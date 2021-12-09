@@ -1,12 +1,13 @@
 import { useHistory } from "react-router-dom"
 import Button from "./Button"
 
-export const StartScreen = () => {
-    let history = useHistory()
+export const StartScreen = ({show,setShow}) => {
+    
+let history = useHistory()
 
-    const rules = () => {
-        history.push("/rules")
-    }
+const rules = () => {
+    history.push("/Rules")
+}
 
     const game = () => {
         history.push("/game")
@@ -15,7 +16,9 @@ export const StartScreen = () => {
     return (
         <div className="containerdiv">
             <h1>Over and Under</h1>
-            <Button text={"Rules"} onClick={rules} /><br />
+            <button variant="primary" onClick={ rules}>
+        Rules
+        </button> <br/>
             <Button text={"Start"} onClick={game} />
         </div>
     )
