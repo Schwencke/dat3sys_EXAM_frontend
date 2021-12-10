@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import { useHistory } from "react-router-dom";
 
 const Score = ({ win, firstGame, toggle, score, setScore }) => {
@@ -17,7 +17,6 @@ const Score = ({ win, firstGame, toggle, score, setScore }) => {
       if (win === true) return incrementScore()
       if (win === false) {
         lose()
-        //return setScore("You lost:" + score)
       }
     }
   }, [win, toggle])

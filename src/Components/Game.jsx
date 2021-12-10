@@ -2,9 +2,8 @@ import Button from "./Button";
 import Card from "./Card";
 import React, { useState, useEffect, useReducer } from "react";
 import Score from "./Score";
-import { useHistory } from "react-router-dom"
-import { Modal,  Container, } from "react-bootstrap";
 
+import { Modal, Container, } from "react-bootstrap";
 
 const winOrLose = (value1, prev1, selec) => {
 
@@ -96,7 +95,7 @@ function reducer(state, action) {
   }
 }
 
-export default function Game({facade, score, setScore,show,setShow,fullscreen,setFullscreen }) {
+export default function Game({ facade, score, setScore, showRules, setShowRules }) {
   const [state, dispatch] = useReducer(reducer, {
     selected_type: "first",
     deck_id: "0",
@@ -164,64 +163,52 @@ export default function Game({facade, score, setScore,show,setShow,fullscreen,se
       setPassText("Pass on in " + (passTurns))
     }
   }
-  let history = useHistory()
-
-  const rules = (breakpoint) => {
-    setFullscreen(breakpoint);
-    setShow(true);
-    history.push("/rules")
-}
-
-
 
   return (
 
     <Container fluid>
-    <div>
-      <Score win={state.win} firstGame={firstGame} toggle={toggle} score={score} setScore={setScore} />
+      <div>
+        <Score win={state.win} firstGame={firstGame} toggle={toggle} score={score} setScore={setScore} />
 
-      <p>
-        Deck ID: {state.deck_id} <br /> Remaining in stack: {state.remaining}{" "}
-        <br />
-        This Card: {state.value} <br />
-        Prev Card: {state.previous_card} <br />
-        Selected : {state.selected_type} <br />
-        win: {state.win + " state"}
-      </p>
+        <p>
+          Deck ID: {state.deck_id} <br /> Remaining in stack: {state.remaining}{" "}
+          <br />
+          This Card: {state.value} <br />
+          Prev Card: {state.previous_card} <br />
+          Selected : {state.selected_type} <br />
+          win: {state.win + " state"}
+        </p>
 
-      <Card image={state.image} />
-      <Button text={"Over"} onClick={dothisover} />
-      <Button text={"Under"} onClick={dothisunder} />
-      <Button disable={disable} onClick={pass} text={passText} />
+        <Card image={state.image} />
+        <Button text={"Over"} onClick={dothisover} />
+        <Button text={"Under"} onClick={dothisunder} />
+        <Button disable={disable} onClick={pass} text={passText} />
 
-      <button  className="me-2" onClick={()=>setShow(true)}>
-        ?
-        </button> <br/>
-        </div>
-        <Modal show={show} >
-              <Modal.Body>
-              GAME RULES:
-When you start the game, you are presented with a card.
-The first player has to guess if the next card will be OVER (higher) or UNDER (lower) than the presented card.
-For each correct guess, a counter increment and keep a total score.
-If you correctly guess 3 or more times, 
-you can PASS your turn to the next player who then continues your turn.
- When a player makes an incorrect guess, the game is lost. The loser has to drink the amount equal to the total score and a new game can be started.
-              </Modal.Body>
+        <button className="me-2" onClick={() => setShowRules(true)}>
+          ?
+        </button> <br />
+      </div>
+      <Modal show={showRules} >
+        <Modal.Body>
+          GAME RULES:
+          When you start the game, you are presented with a card.
+          The first player has to guess if the next card will be OVER (higher) or UNDER (lower) than the presented card.
+          For each correct guess, a counter increment and keep a total score.
+          If you correctly guess 3 or more times,
+          you can PASS your turn to the next player who then continues your turn.
+          When a player makes an incorrect guess, the game is lost. The loser has to drink the amount equal to the total score and a new game can be started.
+        </Modal.Body>
 
-              <Modal.Footer>
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  onClick={() => setShow(false)}
-                >
-                  Cancel 
-                </button>
-              
-              </Modal.Footer>
-            </Modal>
-        </Container>
-    
+        <Modal.Footer>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            onClick={() => setShowRules(false)}
+          >
+            Cancel
+          </button>
+        </Modal.Footer>
+      </Modal>
+    </Container>
   );
 }
-
