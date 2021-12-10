@@ -3,7 +3,6 @@ import Button from "./Button"
 import { Modal, Container, } from "react-bootstrap";
 
 export const StartScreen = ({ showRules, setShowRules }) => {
-
     let history = useHistory()
 
     const game = () => {
