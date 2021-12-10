@@ -1,30 +1,29 @@
-import { useEffect } from "react"
+import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
 const Score = ({ win, firstGame, toggle, score, setScore }) => {
   let history = useHistory();
 
   const lose = () => {
-    history.push("/lose")
-  }
+    setTimeout(() => {
+      history.push("/lose");
+    }, 2000);
+  };
 
   const incrementScore = () => {
-    setScore(score + 1)
-  }
+    setScore(score + 1);
+  };
 
   useEffect(() => {
     if (!firstGame) {
-      if (win === true) return incrementScore()
+      if (win === true) return incrementScore();
       if (win === false) {
-        lose()
+        lose();
       }
     }
-  }, [win, toggle])
+  }, [win, toggle]);
 
+  return <p style={{marginTop: 20, fontWeight: 600, fontSize: 20}}>The Score is: {score}</p>;
+};
 
-  return (
-    <p>The Score is: {score}</p>
-  )
-}
-
-export default Score
+export default Score;

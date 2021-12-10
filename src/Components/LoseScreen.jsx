@@ -9,7 +9,7 @@ export const LoseScreen = ({ score }) => {
     }
 
     return (
-        <div>
+        <div className="containerdiv">
             <img src="/drunk.gif" alt="" />
             <h1>You won! Now drink {score} sips...</h1>
             <Button text={"Restart"} onClick={restart} /><br />
